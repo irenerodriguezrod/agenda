@@ -1,49 +1,135 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.sauces.agenda;
 
+/*
+
+* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+
+* Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+
+*/
+
+package com.mycompany.agenda05;
+ 
+ 
+import java.util.ArrayList;
+
+import java.util.LinkedList;
+
+import java.util.List;
+
 /**
- *
- * @author ambrosio
- */
+
+*
+
+* @author Usuario
+
+*/
+
 public class Agenda {
 
-    private Contacto contacto;
+private final List<Contacto> contactos;
 
-    public boolean crearContacto(String nombre, String telefono, String email) {
-        boolean contactoCreado = false;
-        if (contacto == null) {
-            contacto = new Contacto(nombre, telefono, email);
-            contactoCreado = true;
-        }
-        return contactoCreado;
+//El programa aconseja usar final aqui porque En ningún lugar del código se reasigna contactos a otra lista. 
+
+//Lo único que haces es modificar el contenido de la lista (agregar, eliminar, etc.).
+ 
+    public Agenda() {
+
+        contactos=new LinkedList<>();
+
     }
 
-    public Contacto consultarContacto(String nombre) {
-        Contacto contacto = null;
-        if (this.contacto != null && nombre.equals(this.contacto.getNombre())) {
-            contacto = this.contacto;
+    public boolean crearContacto(Contacto contacto) {
+
+        boolean contactoCreado = false;
+
+        if(!contactos.contains(contacto)){
+
+            contactos.add(contacto); // o salida=contactos.add(contacto) y return salida
+
+        }else {
+
+        return false;
+
         }
-        return contacto;
+
+      return contactoCreado;
+
+    }
+
+ 
+    public Contacto consultarContacto(String nombre) {
+
+        Contacto contacto =null;
+
+          int indice;
+
+    indice=buscarContacto(nombre);
+
+    if(indice!=-1){
+
+     contacto=contactos.get(indice);
+
+     contacto=new Contacto(contacto.getNombre(), contacto.getTelefono(), contacto.getEmail());
+
+    }
+
+       return contacto;
+
     }
 
     public boolean modificarContacto(Contacto contacto) {
-        boolean contactoModificado = false;
-        if (contacto!= null && contacto.equals(this.contacto)) {
-            this.contacto = contacto;
-            contactoModificado = true;
-        }
+
+         boolean contactoModificado = false;
+
+         int indice;
+
+         indice=buscarContacto(contacto.getNombre());
+
+         if(indice!=-1){
+
+         contactos.set(indice, contacto);
+
+         }
+
         return contactoModificado;
+
     }
 
     public boolean eliminarContacto(String nombre) {
-        boolean contactoEliminado = false;
-        if (contacto != null && nombre.equals(contacto.getNombre())) {
-            contacto = null;
-            contactoEliminado=true;            
-        }
-        return contactoEliminado;
+
+        boolean contactoEliminado=false;
+
+        Contacto contactoAEliminar=new Contacto(nombre);
+
+        if(contactos.contains(contactoAEliminar)){
+
+           contactos.remove(contactoAEliminar);
+
+           contactoEliminado=true;
+
+       }
+
+       return contactoEliminado;
+
     }
+
+    public List<Contacto> listaContactos(){
+
+    return new ArrayList<>(contactos);
+
+    }
+
+    public int mostrarNumeroContactos(){
+
+    return contactos.size();
+
+}   
+
+    private int buscarContacto(String nombre){
+
+     return contactos.indexOf(new Contacto(nombre));
+
+    }
+
 }
