@@ -5,6 +5,7 @@ import java.util.Objects;
 /**
  *
  * @author irene
+ * @version 2.0
  */
 
 public class Contacto {
