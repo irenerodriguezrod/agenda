@@ -1,15 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.sauces.agenda;
 
 import java.util.Objects;
 
 /**
  *
- * @author ambrosio
+ * @author irene
+ * @version 2.0
  */
+
 public class Contacto {
     
     private String nombre;
@@ -34,9 +32,9 @@ public class Contacto {
     
     
     /**
-     * Get the value of email
+     * Devuelve el valor email
      *
-     * @return the value of email
+     * @return valor email
      */
     public String getEmail() {
         return email;
@@ -45,7 +43,7 @@ public class Contacto {
     /**
      * Set the value of email
      *
-     * @param email new value of email
+     * @param email nuevo valor de email
      */
     public void setEmail(String email) {
         this.email = email;
