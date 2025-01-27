@@ -2,7 +2,8 @@ package es.sauces.agenda;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
 *
@@ -12,11 +13,10 @@ import java.util.TreeSet;
 
 public class Agenda {
 
-private final TreeSet<Contacto> contactos;
-//El programa aconseja usar final aqui porque En ningún lugar del código se reasigna contactos a otra lista. 
+private Map<String,Contacto>contactos;
 
     public Agenda() {
-        contactos=new TreeSet<>();
+        contactos=new TreeMap<>();
     }
 
     /**
@@ -27,14 +27,11 @@ private final TreeSet<Contacto> contactos;
      * @return El valor de un nuevo contacto creado
      */
     public boolean crearContacto(Contacto contacto) {
-        boolean contactoCreado = false;
-        if(!contactos.contains(contacto)){
-            contactos.add(contacto); // o salida=contactos.add(contacto) y return salida
+        //se comprueba que no sea un valor nulo y en caso de que no lo sea, crea uno nuevo. En caso de que exista, devuelve error
+        if(contactos!=null){
+            return contactos.putIfAbsent(contacto.getNombre(), contacto)==null;
         }
-        else {
-            return false;
-        }
-      return contactoCreado;
+        return false;
     }
 
     /**
@@ -43,14 +40,10 @@ private final TreeSet<Contacto> contactos;
      * @return Devuelve el contacto que el usuario está buscando. Devuelve el nombre, telefono y email que hayamos introducido en el momento en que lo creamos
      */
     public Contacto consultarContacto(String nombre) {
-        // la c es la abreviatura de contacto. En este caso lo que se hace es que para cada contacto (c) de la lista de contactos, 
-        //si cuando obtenemos el nombre nos devuelve uno igual al que hemos introducido, se devuelven todos los datos que tengamos almacenados del contacto a buscar
-        for(Contacto c: contactos){
-            if(c.getNombre().equals(nombre)){
-                return c;
-            }
-        }
-       return null;
+        // se hace un get del nombre pq es la clave
+        contactos.get(nombre);
+        
+        return null;
     }
 
     /**
@@ -59,20 +52,11 @@ private final TreeSet<Contacto> contactos;
      * @return modifica los valores iniciales que tenia el contacto por los nuevos que ha introducido el usuario
      */
     public boolean modificarContacto(Contacto contacto) {
-        boolean modificado = false;
-        Contacto c;
-        
-        //comprobación de posibles errores, hay que verificar que no sea null
-        if(contacto!=null){
-            c=consultarContacto(contacto.getNombre());
-            //aqui indica que si es el mismo contacto, que no cambie nada
-            if(c!=null){
-                c.setTelefono(contacto.getTelefono());
-                c.setEmail(contacto.getEmail());
-                modificado=true;
-            }  
+        if(contacto!=null && contactos.get(contacto.getNombre())!=null){
+            contactos.put(contacto.getNombre(), contacto);
+            return true;
         }
-        return modificado;
+        return false;
     }
 
     /**
@@ -81,21 +65,16 @@ private final TreeSet<Contacto> contactos;
      * @return elimina el contacto en caso de que lo hayamos confirmado
      */
     public boolean eliminarContacto(String nombre) {
-        boolean contactoEliminado=false;
-        Contacto contactoAEliminar=new Contacto(nombre);
-        if(contactos.contains(contactoAEliminar)){
-           contactos.remove(contactoAEliminar);
-           contactoEliminado=true;
-       }
-       return contactoEliminado;
+        contactos.remove(nombre);
+        return true;
     }
 
     /**
      * 
-     * @return 
+     * @return la lista de todos los contactos que tenemos 
      */
     public List<Contacto> listaContactos(){
-        return new ArrayList<>(contactos);
+        return new ArrayList<>(contactos.values());
     }
 
     /**
